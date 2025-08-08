@@ -1,0 +1,33 @@
+// src/middleware/authMiddleware.ts
+import { Request, Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
+import User, { IUser } from '../models/User';
+
+interface JwtPayload {
+    id: string;
+}
+
+const protect = async (req: Request, res: Response, next: NextFunction) => {
+    let token;
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+        try {
+            token = req.headers.authorization.split(' ')[1];
+            const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET!) as JwtPayload;
+
+            // এখানে আমরা ইউজারের ডেটা রিকোয়েস্ট অবজেক্টে যুক্ত করছি
+            const user = await User.findById(decoded.id).select('-password');
+            if (!user) {
+                return res.status(401).json({ message: 'User not found' });
+            }
+            (req as any).user = user; 
+            next();
+        } catch (error) {
+            res.status(401).json({ message: 'Not authorized, token failed' });
+        }
+    }
+    if (!token) {
+        res.status(401).json({ message: 'Not authorized, no token' });
+    }
+};
+
+export { protect };

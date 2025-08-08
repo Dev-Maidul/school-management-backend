@@ -1,0 +1,21 @@
+# Node.js
+node_modules/
+
+# Logs
+*.log
+
+# dotenv environment variables
+.env
+
+# TypeScript
+dist/
+
+# OS files
+.DS_Store
+
+# IDEs (Visual Studio Code, WebStorm, etc.)
+.vscode/
+.idea/
+
+# npm-debug.log
+npm-debug.log*
