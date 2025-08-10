@@ -1,12 +1,51 @@
-# React + Vite
+Test_School_Frontend
+This repository contains the frontend for the Test_School Competency Assessment Platform. The frontend is a React application that provides a user interface for the multi-step quiz, authentication, and results display. It communicates with the backend via a REST API.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+🎯 Features
+Responsive UI: A modern, mobile-optimized user interface using Tailwind CSS.
 
-Currently, two official plugins are available:
+3-Step Quiz Flow: A dynamic quiz page that guides users through a 3-step assessment.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Real-time Timer: A countdown timer for each question that auto-submits on expiration.
 
-## Expanding the ESLint configuration
+Conditional Rendering: The UI adapts based on user authentication status and quiz progress.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+State Management: Uses React hooks for local state and Tanstack Query for efficient data fetching.
+
+⚙️ Tech Stack
+Framework: React.js
+
+Language: JavaScript / JSX
+
+Styling: Tailwind CSS
+
+State/Data Fetching: React Query, Axios
+
+Animations: Framer Motion
+
+Routing: React Router
+
+🚀 Getting Started
+Prerequisites
+Node.js (v18 or higher)
+
+Running Backend: Ensure the Test_School_Backend server is running and accessible.
+
+Local Setup
+Clone the repository:
+
+git clone https://github.com/your-username/Test_School_Frontend.git
+cd Test_School_Frontend
+
+Install dependencies:
+
+npm install
+
+Configure API Base URL
+Open your axios calls and update the base URL to point to your deployed backend URL. If you are running the backend locally, the URL will be http://localhost:3000.
+
+Start the development server:
+
+npm run dev
+
+The app will run on http://localhost:5173 (or another port).
