@@ -5,11 +5,11 @@
   "main": "dist/server.js",
   "type": "module",
   "scripts": {
-  "start": "node dist/server.js",
-  "build": "tsc",
-  "dev": "node --loader ts-node/esm src/server.ts",
-  "add:questions": "ts-node --esm src/addQuestions.ts"
-},
+    "start": "node dist/server.js",
+    "build": "tsc",
+    "dev": "tsx watch src/server.ts",
+    "add:questions": "ts-node --esm src/addQuestions.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
