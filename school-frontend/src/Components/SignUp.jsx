@@ -8,9 +8,8 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const from = location.state?.from || '/';
+  const from = location.state?.from || '/dashboard'; // Default to /dashboard if no from state
 
-  // Function to handle signup using the custom backend API
   const handleSignup = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -32,13 +31,11 @@ const Signup = () => {
         name,
         email,
         password,
-        // The role is set to 'Student' by default as per project requirements
         role: 'Student',
       });
 
       if (response.status === 201) {
         const { accessToken, refreshToken } = response.data;
-        // Storing tokens in localStorage upon successful registration
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
 
@@ -52,7 +49,6 @@ const Signup = () => {
     }
   };
 
-  // Animation variants for the form
   const formVariants = {
     hidden: { opacity: 0, x: -100 },
     visible: { opacity: 1, x: 0, transition: { duration: 0.6 } },

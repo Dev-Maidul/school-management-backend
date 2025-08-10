@@ -9,9 +9,8 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const from = location.state?.from || '/';
+  const from = location.state?.from || '/dashboard'; // Default to /dashboard if no from state
 
-  // Function to handle sign-in using the custom backend API
   const handleSignIn = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -31,14 +30,14 @@ const Login = () => {
         const { accessToken, refreshToken } = response.data;
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
-        
+
         // Add success toast notification
         toast.success('Successfully logged in!');
-        
+
         // Redirecting after a short delay for the toast to be seen
         setTimeout(() => {
           navigate(from, { replace: true });
-        }, 1000); 
+        }, 1000);
       }
     } catch (err) {
       setLoading(false);
@@ -47,7 +46,6 @@ const Login = () => {
     }
   };
 
-  // Animation variants for the card
   const cardVariants = {
     hidden: { opacity: 0, y: -50 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5, delay: 0.2 } },

@@ -7,17 +7,22 @@ import toast from 'react-hot-toast';
 import { AuthContext } from '../../Context/AuthProvider';
 
 const QuizPage = () => {
-  const { user } = useContext(AuthContext);
+  const { user, lastTestSession } = useContext(AuthContext);
   const navigate = useNavigate();
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState({});
-  const [timer, setTimer] = useState(60); // 1 minute per question
+  const [timer, setTimer] = useState(60);
   const [isTestFinished, setIsTestFinished] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
 
-  // Fetch questions from the backend based on currentStep
-  const { isLoading, error } = useQuery({
+  useEffect(() => {
+    if (lastTestSession && lastTestSession.canProceed) {
+      setCurrentStep(lastTestSession.currentStep + 1);
+    }
+  }, [lastTestSession]);
+
+  const { isLoading, error, refetch } = useQuery({
     queryKey: ['quizQuestions', currentStep],
     queryFn: async () => {
       const accessToken = localStorage.getItem('accessToken');
@@ -30,13 +35,11 @@ const QuizPage = () => {
       setQuestions(response.data);
       return response.data;
     },
-    enabled: !!user && !isTestFinished,
+    enabled: !!user && !isTestFinished, // Fetch only if the user is logged in and test is not finished
   });
 
-  // Timer logic
   useEffect(() => {
-    if (questions.length === 0 || isTestFinished) return;
-
+    if (questions.length === 0) return;
     const interval = setInterval(() => {
       setTimer((prevTimer) => {
         if (prevTimer === 1) {
@@ -46,11 +49,9 @@ const QuizPage = () => {
         return prevTimer - 1;
       });
     }, 1000);
-
     return () => clearInterval(interval);
-  }, [currentQuestionIndex, questions, isTestFinished]);
+  }, [currentQuestionIndex, questions, currentStep]);
 
-  // Handle answer selection
   const handleAnswerSelect = (option) => {
     setAnswers({
       ...answers,
@@ -58,7 +59,6 @@ const QuizPage = () => {
     });
   };
 
-  // Move to the next question or submit the test
   const handleNextQuestion = async () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -78,20 +78,20 @@ const QuizPage = () => {
 
         toast.success(`Test finished! Your score: ${response.data.percentage.toFixed(2)}%`);
         
-        // If the user passes, move to the next step
         if (response.data.canProceed && currentStep < 3) {
-          setCurrentStep(currentStep + 1);  // Proceed to the next step
-          setCurrentQuestionIndex(0);  // Start from the first question of the next step
-          setAnswers({});  // Reset answers
-          setTimer(60);  // Reset timer
+          setCurrentStep(currentStep + 1);
+          setCurrentQuestionIndex(0);
+          setAnswers({});
+          setTimer(60);
           toast.info(`Proceeding to Step ${currentStep + 1}!`);
         } else {
-          // If the user fails or completes all steps, finish the quiz
           setIsTestFinished(true);
           navigate('/results', { state: { result: response.data } });
         }
       } catch (err) {
         toast.error('Failed to submit test.');
+        setIsTestFinished(true);
+        navigate('/results', { state: { result: { percentage: 0, certificationLevel: 'Failed' } } });
       }
     }
   };

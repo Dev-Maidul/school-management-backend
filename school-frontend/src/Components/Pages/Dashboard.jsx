@@ -6,7 +6,6 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   const handleStartQuiz = () => {
-    // Navigate to the quiz page to start the assessment
     navigate('/quiz');
   };
 
