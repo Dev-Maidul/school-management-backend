@@ -14,7 +14,7 @@ const protect = async (req: Request, res: Response, next: NextFunction) => {
             token = req.headers.authorization.split(' ')[1];
             const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET!) as JwtPayload;
 
-            // এখানে আমরা ইউজারের ডেটা রিকোয়েস্ট অবজেক্টে যুক্ত করছি
+            
             const user = await User.findById(decoded.id).select('-password');
             if (!user) {
                 return res.status(401).json({ message: 'User not found' });

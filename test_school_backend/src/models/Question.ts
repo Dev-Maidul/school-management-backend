@@ -1,4 +1,3 @@
-// src/models/Question.ts
 import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IQuestion extends Document {
@@ -6,7 +5,7 @@ export interface IQuestion extends Document {
     options: string[];
     correctAnswer: string;
     level: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
-    competency: string; // আপাতত একটি সাধারণ string হিসেবে রাখা হয়েছে
+    competency: string;
 }
 
 const questionSchema: Schema = new Schema({

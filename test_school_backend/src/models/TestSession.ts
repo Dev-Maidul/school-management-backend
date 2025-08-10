@@ -1,4 +1,3 @@
-// src/models/TestSession.ts
 import mongoose, { Document, Schema } from 'mongoose';
 
 export interface ITestSession extends Document {
@@ -6,6 +5,7 @@ export interface ITestSession extends Document {
     level: string;
     score: number;
     completed: boolean;
+    currentStep: number;
 }
 
 const testSessionSchema: Schema = new Schema({
@@ -13,6 +13,7 @@ const testSessionSchema: Schema = new Schema({
     level: { type: String, required: true },
     score: { type: Number, required: true, default: 0 },
     completed: { type: Boolean, required: true, default: false },
+    currentStep: { type: Number, required: true, default: 1 },
 }, { timestamps: true });
 
 const TestSession = mongoose.model<ITestSession>('TestSession', testSessionSchema);
